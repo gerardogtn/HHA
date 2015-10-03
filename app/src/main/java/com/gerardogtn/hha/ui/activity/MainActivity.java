@@ -1,9 +1,11 @@
-package com.gerardogtn.hha;
+package com.gerardogtn.hha.ui.activity;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+
+import com.gerardogtn.hha.R;
 
 public class MainActivity extends AppCompatActivity {
 

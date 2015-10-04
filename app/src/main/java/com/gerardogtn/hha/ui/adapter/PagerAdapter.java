@@ -31,6 +31,11 @@ public class PagerAdapter extends FragmentPagerAdapter {
         return mFragments.size();
     }
 
+    @Override
+    public CharSequence getPageTitle(int position) {
+        return mFragmentNames.get(position);
+    }
+
     public void addFragment(Fragment fragment, String fragmentName){
         mFragments.add(fragment);
         mFragmentNames.add(fragmentName);

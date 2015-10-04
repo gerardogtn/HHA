@@ -15,6 +15,16 @@ public class Alarm {
 
     public Alarm() {
         id = -1;
+        hour = -1;
+        minute = -1;
+        isOn = false;
+    }
+
+    public Alarm(int hour, int minute){
+        id = -1;
+        setHour(hour);
+        setMinute(minute);
+        this.isOn = true;
     }
 
     public long getId() {
@@ -63,5 +73,10 @@ public class Alarm {
 
     public void makeOff() {
         this.isOn = false;
+    }
+
+    public String getFormattedString(){
+        return String.format("%02d:%02d", this.hour, this.minute);
+
     }
 }

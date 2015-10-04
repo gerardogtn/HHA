@@ -4,11 +4,13 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import com.gerardogtn.hha.R;
+
 import com.gerardogtn.hha.ui.adapter.PagerAdapter;
 import com.gerardogtn.hha.ui.fragment.AlarmFragment;
 import com.gerardogtn.hha.ui.fragment.ProfileFragment;

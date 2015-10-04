@@ -22,7 +22,7 @@ import java.util.List;
 public class AlarmHelper extends BroadcastReceiver {
 
     @Override
-    public void onReceive(Context context, Intent intent) {
+   public void onReceive(Context context, Intent intent) {
         setAlarms(context);
     }
 

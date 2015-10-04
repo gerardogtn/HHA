@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
 
+import com.gerardogtn.hha.ui.activity.AlarmActivity;
 import com.gerardogtn.hha.ui.activity.WakeUpActivity;
 import com.gerardogtn.hha.util.AlarmHelper;
 
@@ -22,7 +23,7 @@ public class AlarmService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Intent alarmIntent = new Intent(getBaseContext(), WakeUpActivity.class);
+        Intent alarmIntent = new Intent(getBaseContext(), AlarmActivity.class);
         alarmIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         alarmIntent.putExtras(intent);
         getApplication().startActivity(alarmIntent);

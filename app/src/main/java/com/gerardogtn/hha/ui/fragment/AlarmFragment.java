@@ -124,11 +124,11 @@ public class AlarmFragment extends Fragment implements TimePickerDialog.OnTimeSe
     }
 
     public void setAlarmEnabled(long id, boolean isEnabled) {
-        AlarmHelper.cancelAlarms(getActivity());
+        //AlarmHelper.cancelAlarms(getActivity());
         Alarm model = mDbHelper.getAlarm(id);
         model.setIsOn(isEnabled);
         mDbHelper.update(model);
-        AlarmHelper.setAlarms(getActivity());
+        //AlarmHelper.setAlarms(getActivity());
     }
 
     private void setUpRecyclerView() {

@@ -11,6 +11,6 @@ public class APIConstants {
     public static final String PATH_USERS = "/users";
     public static final String PATH_DATE = "add_date";
 
-    public static final String ADD_DATE_POST = URL_BASE + PATH_HOST + PATH_USERS +PATH_DATE;
+    public static final String ADD_DATE_POST = PATH_HOST + PATH_USERS +PATH_DATE;
 
 }

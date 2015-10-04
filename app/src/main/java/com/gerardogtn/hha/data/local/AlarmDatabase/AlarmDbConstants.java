@@ -1,4 +1,4 @@
-package com.gerardogtn.hha.service.AlarmDatabase;
+package com.gerardogtn.hha.data.local.AlarmDatabase;
 
 /**
  * Created by gerardogtn on 10/3/15.

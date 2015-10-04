@@ -1,4 +1,4 @@
-package com.gerardogtn.hha.data.local;
+package com.gerardogtn.hha.data.model;
 
 import android.net.Uri;
 
@@ -7,18 +7,41 @@ import android.net.Uri;
  */
 public class Alarm {
 
+    private long id;
     private boolean isOn;
     private int hour;
     private int minute;
-    private Uri tone;
+//    private Uri tone;
 
+    public Alarm() {
+        id = -1;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public boolean isOn() {
+        return isOn;
+    }
+
+    public void setIsOn(boolean isOn) {this.isOn = isOn;}
 
     public int getHour() {
         return hour;
     }
 
     public void setHour(int hour) {
-        this.hour = hour;
+        if (hour < 24 && hour >= 0){
+            this.hour = hour;
+        }
+        else{
+            throw new IllegalArgumentException();
+        }
     }
 
     public int getMinute() {
@@ -34,15 +57,11 @@ public class Alarm {
         }
     }
 
-    public boolean isOn() {
-        return isOn;
-    }
-
-    public void setOn() {
+    public void makeOn() {
         this.isOn = true;
     }
 
-    public void setOff() {
+    public void makeOff() {
         this.isOn = false;
     }
 }

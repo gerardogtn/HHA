@@ -10,5 +10,7 @@
         <item name="android:divider">@color/divider</item>
         <item name="android:icon">@color/icons</item>
     </style>
+    <style name="HhaTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+    <style name="HhaTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
 </resources>

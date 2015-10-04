@@ -1,26 +1,28 @@
 package com.gerardogtn.hha.ui.fragment;
 
 
+import android.app.Activity;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.widget.TimePicker;
 
 import com.gerardogtn.hha.R;
+import com.gerardogtn.hha.data.local.AlarmDatabase.AlarmDbHelper;
 import com.gerardogtn.hha.data.model.Alarm;
 import com.gerardogtn.hha.ui.adapter.AlarmAdapter;
+import com.gerardogtn.hha.util.AlarmHelper;
 
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
@@ -38,6 +40,7 @@ public class AlarmFragment extends Fragment implements TimePickerDialog.OnTimeSe
     private TimePickerDialog mTimePickerDialog;
 
     private AlarmAdapter mAdapter;
+    private AlarmDbHelper mDbHelper;
 
 
     @Bind(R.id.list_alarms)
@@ -46,12 +49,8 @@ public class AlarmFragment extends Fragment implements TimePickerDialog.OnTimeSe
     @Bind(R.id.btn_new_alarm)
     FloatingActionButton mFab;
 
-    private List<Alarm> mAlarms;
-
     public AlarmFragment() {
-        this.mAlarms = new ArrayList<>();
-        mAlarms.add(new Alarm(8, 0));
-        mAlarms.add(new Alarm(9, 0));
+
     }
 
     public static AlarmFragment newInstance() {
@@ -62,6 +61,7 @@ public class AlarmFragment extends Fragment implements TimePickerDialog.OnTimeSe
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mDbHelper = new AlarmDbHelper(getActivity());
     }
 
     @Override
@@ -74,25 +74,43 @@ public class AlarmFragment extends Fragment implements TimePickerDialog.OnTimeSe
         return root;
     }
 
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-    private void setUpRecyclerView() {
-        Context context = getActivity();
-        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
-        mRecycleView.setLayoutManager(linearLayoutManager);
-        mAdapter = new AlarmAdapter(context, mAlarms);
-        mRecycleView.setAdapter(mAdapter);
+        if (resultCode == Activity.RESULT_OK){
+            mAdapter.setAlarms(mDbHelper.getAlarms());
+            mAdapter.notifyDataSetChanged();
+        }
     }
 
     @OnClick(R.id.btn_new_alarm)
     public void addAlarm(){
-        mTimePickerDialog.show();
+        if (mTimePickerDialog != null) {
+            mTimePickerDialog.show();
+        }
     }
 
+    @Override
+    public void onPause() {
+        mTimePickerDialog = null;
+        super.onPause();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        setUpTimePickerDialog();
+    }
 
     @Override
     public void onTimeSet(TimePicker timePicker, int hour, int minute) {
-        mAlarms.add(new Alarm(hour, minute));
+        Alarm newAlarm = new Alarm(hour, minute);
+        mDbHelper.createAlarm(newAlarm);
+        mAdapter.setAlarms(mDbHelper.getAlarms());
         mAdapter.notifyDataSetChanged();
+
+        //setAlarmEnabled(newAlarm.getId(), newAlarm.isOn());
     }
 
     private void setUpTimePickerDialog() {
@@ -104,4 +122,21 @@ public class AlarmFragment extends Fragment implements TimePickerDialog.OnTimeSe
                 calendar.get(Calendar.MINUTE),
                 false);
     }
+
+    public void setAlarmEnabled(long id, boolean isEnabled) {
+        AlarmHelper.cancelAlarms(getActivity());
+        Alarm model = mDbHelper.getAlarm(id);
+        model.setIsOn(isEnabled);
+        mDbHelper.update(model);
+        AlarmHelper.setAlarms(getActivity());
+    }
+
+    private void setUpRecyclerView() {
+        Context context = getActivity();
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false);
+        mRecycleView.setLayoutManager(linearLayoutManager);
+        mAdapter = new AlarmAdapter(context, mDbHelper.getAlarms(), this);
+        mRecycleView.setAdapter(mAdapter);
+    }
+
 }

@@ -10,6 +10,8 @@ import android.widget.TextView;
 
 import com.gerardogtn.hha.R;
 import com.gerardogtn.hha.data.model.Alarm;
+import com.gerardogtn.hha.ui.activity.MainActivity;
+import com.gerardogtn.hha.ui.fragment.AlarmFragment;
 
 import java.util.List;
 
@@ -24,12 +26,16 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
     private List<Alarm> mAlarms;
     private LayoutInflater inflater;
-    private Context mContext;
+    private AlarmFragment mFragment;
 
-    public AlarmAdapter(Context context, List<Alarm> alarms) {
+    public AlarmAdapter(Context context, List<Alarm> alarms, AlarmFragment fragment) {
         this.mAlarms = alarms;
-        inflater = LayoutInflater.from(context);
-        mContext = context;
+        inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        mFragment = fragment;
+    }
+
+    public void setAlarms(List<Alarm> alarms){
+        this.mAlarms = alarms;
     }
 
     @Override
@@ -41,17 +47,22 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
 
     @Override
     public void onBindViewHolder(AlarmViewHolder holder, int position) {
-        holder.setData(mAlarms.get(position), mContext);
+        holder.setData(mAlarms.get(position), mFragment);
     }
 
     @Override
     public int getItemCount() {
-        return mAlarms.size();
+        if (mAlarms != null){
+            return mAlarms.size();
+        } else {
+            return 0;
+        }
     }
 
     public class AlarmViewHolder extends RecyclerView.ViewHolder {
 
         private Alarm mAlarm;
+        private AlarmFragment mFragment;
 
         private int onColor = 0xFF9C27B0;
         private int offColor = 0xFFFF9800;
@@ -68,8 +79,9 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
             ButterKnife.bind(this, view);
         }
 
-        public void setData(Alarm alarm, Context context){
+        public void setData(Alarm alarm, AlarmFragment fragment){
             this.mAlarm = alarm;
+            this.mFragment = fragment;
             alarmTextView.setText(alarm.getFormattedString());
             drawToggleButton();
         }
@@ -89,6 +101,7 @@ public class AlarmAdapter extends RecyclerView.Adapter<AlarmAdapter.AlarmViewHol
                 enableAlarm.setText("ENCENDER");
                 enableAlarm.setBackgroundColor(offColor);
             }
+            mFragment.setAlarmEnabled(mAlarm.getId(), mAlarm.isOn());
         }
     }
 }

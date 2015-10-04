@@ -11,20 +11,27 @@ public class Alarm {
     private boolean isOn;
     private int hour;
     private int minute;
-//    private Uri tone;
+    private static int count = 0;
 
     public Alarm() {
-        id = -1;
+        id = ++count;
         hour = -1;
         minute = -1;
         isOn = false;
     }
 
     public Alarm(int hour, int minute){
-        id = -1;
+        id = ++count;
         setHour(hour);
         setMinute(minute);
         this.isOn = true;
+    }
+
+    public Alarm(int hour, int minute, boolean isOn){
+        id = ++count;
+        setHour(hour);
+        setMinute(minute);
+        this.isOn = isOn;
     }
 
     public long getId() {

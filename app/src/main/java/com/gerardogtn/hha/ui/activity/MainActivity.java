@@ -1,5 +1,6 @@
 package com.gerardogtn.hha.ui.activity;
 
+import android.app.AlarmManager;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -20,6 +21,8 @@ import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
 
+    private AlarmManager mAlarmManager;
+
     @Bind(R.id.toolbar)
     Toolbar mToolbar;
 
@@ -39,6 +42,7 @@ public class MainActivity extends AppCompatActivity {
         setSupportActionBar(mToolbar);
         setUpViewPager();
         mTabLayout.setupWithViewPager(mViewPager);
+        mAlarmManager = (AlarmManager) getSystemService(ALARM_SERVICE);
     }
 
 

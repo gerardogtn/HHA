@@ -56,6 +56,15 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         return getWritableDatabase().insert(AlarmDbConstants.TABLE_ALARMS, null, values);
     }
 
+    public long update(Alarm model) {
+        ContentValues values = write(model);
+        return getWritableDatabase().
+                update(AlarmDbConstants.TABLE_ALARMS,
+                        values,
+                        AlarmDbConstants.COLUMN_ID + " = ?",
+                        new String[]{String.valueOf(model.getId())});
+    }
+
     public Alarm getAlarm(long id) {
         SQLiteDatabase db = this.getReadableDatabase();
 
@@ -74,15 +83,6 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
         return null;
     }
 
-    public long update(Alarm model) {
-        ContentValues values = write(model);
-        return getWritableDatabase().
-                update(AlarmDbConstants.TABLE_ALARMS,
-                        values,
-                        AlarmDbConstants.COLUMN_ID + " = ?",
-                        new String[]{String.valueOf(model.getId())});
-    }
-
     public int delete(long id) {
         return getWritableDatabase().
                 delete(AlarmDbConstants.TABLE_ALARMS,
@@ -98,16 +98,14 @@ public class AlarmDbHelper extends SQLiteOpenHelper {
 
         Cursor cursor = db.rawQuery(select, null);
 
-        List<Alarm> alarmList = new ArrayList<Alarm>();
+        List<Alarm> alarmList = new ArrayList<>();
 
         while (cursor.moveToNext()) {
             alarmList.add(load(cursor));
         }
 
-        if (!alarmList.isEmpty()) {
-            return alarmList;
-        }
-
-        return null;
+        return alarmList;
     }
+
+
 }

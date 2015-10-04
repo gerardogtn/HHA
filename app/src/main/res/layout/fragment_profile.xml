@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     tools:context="com.gerardogtn.hha.ui.fragment.ProfileFragment"
     android:weightSum="1"
-    android:id="@+id/">
+    android:id="@+id/container">
 
 
     <FrameLayout

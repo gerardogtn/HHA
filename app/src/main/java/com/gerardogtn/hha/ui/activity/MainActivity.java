@@ -8,15 +8,22 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.gerardogtn.hha.R;
 
+import com.gerardogtn.hha.data.model.WakeUp;
+import com.gerardogtn.hha.data.remote.APIClent;
 import com.gerardogtn.hha.ui.adapter.PagerAdapter;
 import com.gerardogtn.hha.ui.fragment.AlarmFragment;
 import com.gerardogtn.hha.ui.fragment.ProfileFragment;
 
 import butterknife.Bind;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
+import retrofit.Callback;
+import retrofit.RetrofitError;
+import retrofit.client.Response;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -54,7 +61,23 @@ public class MainActivity extends AppCompatActivity {
 
         if (id == R.id.action_settings) {
             return true;
+        }if(id == R.id.post){
+            WakeUp wakeUp = new WakeUp(2015, 10, 04, 11, 8, true, 4);
+            APIClent.newInstance().addDatePost(wakeUp, new Callback<WakeUp>() {
+                @Override
+                public void success(WakeUp wakeUp, Response response) {
+                    Toast.makeText(MainActivity.this, ":)", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void failure(RetrofitError error) {
+                    Toast.makeText(MainActivity.this, ":(", Toast.LENGTH_SHORT).show();
+                    error.printStackTrace();
+
+                }
+            });
         }
+
 
         return super.onOptionsItemSelected(item);
     }
@@ -65,4 +88,6 @@ public class MainActivity extends AppCompatActivity {
         adapter.addFragment(ProfileFragment.newInstance(), "Perfil" );
         mViewPager.setAdapter(adapter);
     }
+
+
 }

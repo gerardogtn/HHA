@@ -1,45 +1,46 @@
 package com.gerardogtn.hha.ui.activity;
 
+import android.support.design.widget.TabLayout;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
 import com.gerardogtn.hha.R;
-import com.gerardogtn.hha.ui.adapter.AlarmAdapter;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.gerardogtn.hha.ui.adapter.PagerAdapter;
+import com.gerardogtn.hha.ui.fragment.AlarmFragment;
+import com.gerardogtn.hha.ui.fragment.ProfileFragment;
 
 import butterknife.Bind;
+import butterknife.ButterKnife;
 
 public class MainActivity extends AppCompatActivity {
-    private RecyclerView newRecyclerView;
-    private RecyclerView.Adapter newAdapter;
-    private RecyclerView.LayoutManager newLayoutManager;
 
-    @Bind(R.id.list_alarms)
-    RecyclerView list_alarms;
+    @Bind(R.id.toolbar)
+    Toolbar mToolbar;
+
+    @Bind(R.id.tab_layout)
+    TabLayout mTabLayout;
+
+    @Bind(R.id.pager)
+    ViewPager mViewPager;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        newRecyclerView.setHasFixedSize(true);
+        ButterKnife.bind(this);
 
-        newLayoutManager = new LinearLayoutManager(this);
-        newRecyclerView.setLayoutManager(newLayoutManager);
-
-        List<String> alarms = new ArrayList<>();
-        alarms.add("08:00");
-        alarms.add("09:00");
-        newAdapter = new AlarmAdapter(alarms);
-        newRecyclerView.setAdapter(newAdapter);
+        setSupportActionBar(mToolbar);
+        setUpViewPager();
+        mTabLayout.setupWithViewPager(mViewPager);
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -56,5 +57,12 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    private void setUpViewPager() {
+        PagerAdapter adapter = new PagerAdapter(getSupportFragmentManager());
+        adapter.addFragment(AlarmFragment.newInstance(), "Alarmas" );
+        adapter.addFragment(ProfileFragment.newInstance(), "Perfil" );
+        mViewPager.setAdapter(adapter);
     }
 }
